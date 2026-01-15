@@ -1,0 +1,12 @@
+<a href="{{ collection.url }}" class="subcollections__card">
+  <div class="subcollections__bubble">
+    {% if collection.metafields.custom.subcollection_image != blank %}
+      <img src="{{ collection.metafields.custom.subcollection_image | image_url }}" alt="{{ collection.title }}" />
+    {% elsif collection.featured_image != blank %}
+      <img src="{{ collection.featured_image | image_url }}" alt="{{ collection.title }}" />
+    {% else %}
+      <img src="{{ collection.products.first.featured_image | image_url }}" alt="{{ collection.title }}" />
+    {% endif %}
+  </div>
+  <p class="subcollection-title {{ text_style }}" >{{ collection.title }}</p>
+</a>

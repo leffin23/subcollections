@@ -1,0 +1,5 @@
+{% for subcollection in content %}
+  {% if collection.products.size > 0 %}
+    {% render 'subcollection-bubble-card', collection: subcollection, text_style: text_style %}
+  {% endif %}
+{% endfor %}
