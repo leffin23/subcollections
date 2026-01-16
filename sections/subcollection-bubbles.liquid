@@ -1,0 +1,162 @@
+{% liquid
+  assign subcollections = collection.metafields.custom.subcollections.value
+  assign carousel_id = 'subcollections-carousel-' | append: section.id
+
+  assign font_size = 1
+  case section.settings.subcollections_text
+    when 'small'
+      assign font_size = 0.85
+    when 'medium'
+      assign font_size = 1
+    when 'large'
+      assign font_size = 1.15
+  endcase
+%}
+
+{% if subcollections != blank %}
+  <script src="{{ 'subcollection-bubbles.js' | asset_url }}" defer></script>
+
+  <div class="container">
+    <div class="subcollections__container section-spacing-small">
+      <subcollection-bubbles-carousel
+        class="subcollections__carousel subcollections__carousel-{{ section.id }} floating-controls-container floating-controls-container--on-hover"
+      >
+        {% assign adapter_settings = section.settings %}
+
+        {% if adapter_settings.carousel_adapter == 'prestige' %}
+          {% render 'subcollections-carousel-adapter-prestige',
+            content: subcollections,
+            settings: adapter_settings,
+            carousel_id: carousel_id
+          %}
+        {% else %}
+          {% render 'subcollections-carousel-adapter-native',
+            content: subcollections,
+            settings: adapter_settings,
+            carousel_id: carousel_id
+          %}
+        {% endif %}
+      </subcollection-bubbles-carousel>
+    </div>
+  </div>
+{% endif %}
+
+{% style %}
+  .subcollections__carousel-{{ section.id }} {
+    --subcollection-border-color: {{ section.settings.border_color }};
+    --subcollection-border-thickness: {{ section.settings.border_thickness }}px;
+    --subcollection-button-color: {{ section.settings.color_button }};
+    --subcollection-arrow-color: {{ section.settings.color_arrow }};
+    --section-vertical-spacing-small: {{ section.settings.spacing }}rem;
+
+
+    --num-desktop: {{ section.settings.desktop_number | default: 8 }};
+    --num-tablet: {{ section.settings.tablet_number | default: 6 }};
+    --num-mobile: {{ section.settings.mobile_number | default: 2 }};
+    --num-desktop-plus-half: {{ section.settings.desktop_number | plus: 0.5 }};
+    --num-tablet-plus-half: {{ section.settings.tablet_number | plus: 0.5 }};
+    --num-mobile-plus-half: {{ section.settings.mobile_number | plus: 0.5 }};
+    --subcollections_text: {{ font_size }};
+
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Subcollection Bubbles",
+  "settings": [
+    {
+      "type": "select",
+      "id": "carousel_adapter",
+      "label": "Carousel adapter",
+      "default": "native",
+      "options": [
+        { "value": "native", "label": "Native scroll" },
+        { "value": "prestige", "label": "Prestige carousel" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "desktop_number",
+      "label": "Visible bubbles (desktop)",
+      "default": 8,
+      "min": 2,
+      "max": 12
+    },
+    {
+      "type": "range",
+      "id": "tablet_number",
+      "label": "Visible bubbles (tablet)",
+      "default": 6,
+      "min": 2,
+      "max": 8
+    },
+    {
+      "type": "range",
+      "id": "mobile_number",
+      "label": "Visible bubbles (mobile)",
+      "default": 2,
+      "min": 1,
+      "max": 4
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Bubble border color",
+      "default": "#6DF153"
+    },
+    {
+      "type": "range",
+      "id": "border_thickness",
+      "label": "Bubble border thickness",
+      "default": 1,
+      "min": 0,
+      "max": 5
+    },
+    {
+      "type": "color",
+      "id": "color_button",
+      "label": "Button color",
+      "default": "#6DF153"
+    },
+    {
+      "type": "color",
+      "id": "color_arrow",
+      "label": "Arrow color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "label": "Section vertical spacing",
+      "default": 1,
+      "min": 0,
+      "max": 3,
+      "step": 0.1,
+      "unit": "rem"
+    },
+    {
+      "type": "select",
+      "id": "subcollections_text",
+      "label": "Text size",
+      "default": "medium",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "subcollection_text_style",
+      "label": "Text style",
+      "default": "body",
+      "options": [
+        { "value": "h6", "label": "Heading" },
+        { "value": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Subcollection Bubbles" }]
+}
+{% endschema %}

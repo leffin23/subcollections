@@ -1,0 +1,27 @@
+<div class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
+  <button
+    class="prev-next-button prev-next-button--prev circle-button native"
+    disabled
+  >
+    <span class="hidden">Previous</span>
+    <span class="svg-wrapper">
+      {{- 'icon-caret.svg' | inline_asset_content -}}
+    </span>
+  </button>
+</div>
+<div
+  class="subcollections__wrapper subcollections__wrapper-carousel scroll-area native"
+  id="{{ carousel_id }}"
+  group-cells
+>
+  {% render 'subcollection-bubble-list', content: content, text_style: settings.subcollection_text_style %}
+</div>
+
+<div class="floating-controls-container__control" aria-controls="{{ carousel_id }}">
+  <button class="prev-next-button prev-next-button--next native">
+    <span class="hidden">Next</span>
+    <span class="svg-wrapper">
+      {{- 'icon-caret.svg' | inline_asset_content -}}
+    </span>
+  </button>
+</div>
