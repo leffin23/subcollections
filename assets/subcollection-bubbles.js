@@ -2,6 +2,12 @@ class SubcollectionBubblesCarousel extends HTMLElement {
   constructor() {
     super();
     this.handleResize = this.updateStyles.bind(this);
+    this.handleScroll = this.updateBtnState.bind(this);
+
+    this.handlePrevClick = this.clickPrev.bind(this);
+    this.handleNextClick = this.clickNext.bind(this);
+
+    this.resizeObserver = null;
   }
 
   connectedCallback() {
@@ -12,8 +18,6 @@ class SubcollectionBubblesCarousel extends HTMLElement {
     this.prev = this.querySelector(".prev-next-button--prev.native");
     this.next = this.querySelector(".prev-next-button--next.native");
 
-    this.handleScroll = this.updateBtnState.bind(this);
-
     this.updateStyles();
 
     if (this.prev && this.next) this.updateBtnState();
@@ -21,20 +25,29 @@ class SubcollectionBubblesCarousel extends HTMLElement {
     window.addEventListener("resize", this.handleResize);
     document.addEventListener("shopify:section:load", this.handleResize);
 
-    if (this.prev && this.next)
-      this.carousel.addEventListener("scroll", this.handleScroll);
+    if (this.prev && this.next) {
+      this.carousel.addEventListener("scroll", this.handleScroll, { passive: true });
+      this.prev.addEventListener("click", this.handlePrevClick);
+      this.next.addEventListener("click", this.handleNextClick);
+    }
 
-    if (this.prev)
-      this.prev.addEventListener("click", this.clickPrev.bind(this));
-    if (this.next)
-      this.next.addEventListener("click", this.clickNext.bind(this));
+    this.resizeObserver = new ResizeObserver(() => this.updateStyles());
+    this.resizeObserver.observe(this.carousel);
   }
 
   disconnectedCallback() {
     window.removeEventListener("resize", this.handleResize);
     document.removeEventListener("shopify:section:load", this.handleResize);
-    if (this.prev && this.next)
+    if (this.prev && this.next) {
       this.carousel.removeEventListener("scroll", this.handleScroll);
+      this.prev.removeEventListener("click", this.handlePrevClick);
+      this.next.removeEventListener("click", this.handleNextClick);
+    }
+
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
   }
   updateBtnState() {
     const scrollLeft = this.carousel.scrollLeft;
