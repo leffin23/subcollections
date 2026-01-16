@@ -1,12 +1,36 @@
 <a href="{{ collection.url }}" class="subcollections__card">
   <div class="subcollections__bubble">
     {% if collection.metafields.custom.subcollection_image != blank %}
-      <img src="{{ collection.metafields.custom.subcollection_image | image_url }}" alt="{{ collection.title }}" />
+      <img
+        src="{{ collection.metafields.custom.subcollection_image | image_url }}"
+        alt
+        role="presentation"
+        width="150"
+        height="150"
+        loading="lazy"
+        draggable="false"
+      >
     {% elsif collection.featured_image != blank %}
-      <img src="{{ collection.featured_image | image_url }}" alt="{{ collection.title }}" />
+      <img
+        src="{{ collection.featured_image | image_url }}"
+        alt
+        role="presentation"
+        width="150"
+        height="150"
+        loading="lazy"
+        draggable="false"
+      >
     {% else %}
-      <img src="{{ collection.products.first.featured_image | image_url }}" alt="{{ collection.title }}" />
+      <img
+        src="{{ collection.products.first.featured_image | image_url }}"
+        alt
+        role="presentation"
+        width="150"
+        height="150"
+        loading="lazy"
+        draggable="false"
+      >
     {% endif %}
   </div>
-  <p class="subcollection-title {{ text_style }}" >{{ collection.title }}</p>
+  <p class="subcollection-title {{ text_style }}">{{ collection.title }}</p>
 </a>
