@@ -15,6 +15,7 @@ A Shopify section that renders a horizontal carousel of subcollections as "bubbl
 
 ---
 
+
 ## Theme Adapter
 
 The carousel uses a **theme adapter pattern**. Adapters handle only **theme-specific markup and integration** (container element, Prev/Next buttons, icons), while core behavior (sizing, spacing, overflow, responsiveness) is handled by shared JS and CSS.
@@ -43,6 +44,8 @@ The carousel uses a **theme adapter pattern**. Adapters handle only **theme-spec
 Basically the only thing that needs to be updated is: creating a new adapter snippet and some styles (fonts/font-sizes and so on)
 
 ---
+
+<img width="802" height="710" alt="image" src="https://github.com/user-attachments/assets/55008740-adab-432f-99ad-be5345334675" />
 
 ## Files & Responsibilities
 
